@@ -28,6 +28,9 @@
       #meringue path:nth-of-type(6) {
         transform: rotate(300deg);
       }
+      .animated {
+        transition: all 1s;
+      }
     </style>
   </head>
   <body>
@@ -35,8 +38,11 @@
       <a href="index0.html">Main</a>
       &nbsp;&nbsp;&nbsp;&nbsp;
       <a href="canvas1.html">Canvas 1</a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="canvas2.html">Canvas 2</a>
     </div>
 
+    <!-- /*Extra ref attribute in svg tag: */ xmlns:xlink="http://www.w3.org/1999/xlink" -->
     <svg xmlns="https://www.w3.org/2000/svg" width="400" height="400">
       <rect
         x="0"
@@ -46,10 +52,31 @@
         fill="transparent"
         stroke="black"
       />
-      <circle id="crust-outer" cx="200" cy="200" r="150" fill="transparent" />
-      <circle id="crust-inner" cx="200" cy="200" r="110" fill="transparent" />
-      <circle id="filling" cx="200" cy="200" r="140" fill="transparent" />
-      <g id="meringue" style="display: none">
+      <circle
+        id="crust-outer"
+        cx="200"
+        cy="200"
+        r="150"
+        fill="transparent"
+        class="animated"
+      />
+      <circle
+        id="crust-inner"
+        cx="200"
+        cy="200"
+        r="110"
+        fill="transparent"
+        class="animated"
+      />
+      <circle
+        id="filling"
+        cx="200"
+        cy="200"
+        r="140"
+        fill="transparent"
+        class="animated"
+      />
+      <g id="meringue" style="display: none" class="animated">
         <circle cx="200" cy="200" r="130" fill="white" stroke="#B3702D" />
         <path
           d="M 200 200 q 65 -65 0 -130"
@@ -82,6 +109,19 @@
           fill="transparent"
         ></path>
       </g>
+      <text
+        x="200"
+        y="30"
+        text-anchor="middle"
+        font-family="sans-serif"
+        fill="#A593C2"
+        font-size="25"
+      >
+        <tspan fill="#4DCFA8" font-weight="bold">Bethany's</tspan>
+        Custom Pie Maker
+      </text>
+      <image x="320" y="320" witdh="50" height="50" href="logo.png"></image>
+      <!-- <image x="320" y="320" witdh="50" height="50" xlink:href="logo.png"></image> -->
     </svg>
     <div id="options">
       <fieldset>
@@ -103,14 +143,20 @@
         <input type="radio" name="topping" value="none" checked />None<br />
         <input type="radio" name="topping" value="meringue" />Meringue<br />
       </fieldset>
+      <button id="animate">Explode!</button>
     </div>
     <script>
       //   const crustElements = document.querySelectorAll("[name=crust]");
+      const outerCrust = document.getElementById("crust-outer");
+      const innerCrust = document.getElementById("crust-inner");
+      const filling = document.getElementById("filling");
+      const meringue = document.getElementById("meringue");
+
       document.getElementById("options").addEventListener("change", (e) => {
         switch (e.target.name) {
           case "crust":
-            const outerCrust = document.getElementById("crust-outer");
-            const innerCrust = document.getElementById("crust-inner");
+            // const outerCrust = document.getElementById("crust-outer");
+            // const innerCrust = document.getElementById("crust-inner");
             let colors = [];
             switch (e.target.value) {
               case "none":
@@ -133,7 +179,7 @@
             break;
 
           case "filling":
-            const filling = document.getElementById("filling");
+            // const filling = document.getElementById("filling");
             switch (e.target.value) {
               case "none":
                 filling.setAttribute("fill", "transparent");
@@ -153,7 +199,7 @@
             break;
 
           case "topping":
-            const meringue = document.getElementById("meringue");
+            // const meringue = document.getElementById("meringue");
             switch (e.target.value) {
               case "none":
                 meringue.style.display = "none";
@@ -163,6 +209,27 @@
                 break;
             }
             break;
+        }
+      });
+
+      const animateButton = document.getElementById("animate");
+      let isExploded = false;
+      animateButton.addEventListener("click", () => {
+        if (isExploded) {
+          isExploded = false;
+          animateButton.innerHTML = "Explode";
+          outerCrust.style.transform = "none";
+          //innerCrust.style.transform = "none";
+          innerCrust.style.transform = "translate(0,0) scale(1)";
+          filling.style.transform = "none";
+          meringue.style.transform = "none";
+        } else {
+          isExploded = true;
+          animateButton.innerHTML = "Reassemble";
+          outerCrust.style.transform = "translate(-20px, 20px) scale(0.6)";
+          innerCrust.style.transform = "translate(-20px, 20px) scale(0.6)";
+          filling.style.transform = "translate(180px, 20px) scale(0.6)";
+          meringue.style.transform = "translate(180px, 180px) scale(0.6)";
         }
       });
     </script>

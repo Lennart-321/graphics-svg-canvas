@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sketch Tool</title>
+  </head>
+  <body>
+    <div>
+      <a href="index0.html">Main</a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="svg1.html">SVG 1</a>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <a href="canvas1.html">Canvas 1</a>
+    </div>
+    <canvas id="canvas" height="600" width="600"></canvas>
+    <script>
+      const cnv = document.getElementById("canvas");
+      const ctx = cnv.getContext("2d");
+      ctx.beginPath();
+      ctx.rect(0, 0, 600, 600);
+      ctx.stroke();
+
+      //   let isDrawing = false;
+      let preX = -1;
+      let preY;
+      cnv.addEventListener("mousedown", (e) => {
+        preX = e.offsetX;
+        preY = e.offsetY;
+      });
+      cnv.addEventListener("mouseenter", () => {
+        if (e.buttons % 2 == 1) {
+          preX = e.offsetX;
+          preY = e.offsetY;
+        }
+      });
+      cnv.addEventListener("mouseleave", () => {
+        preX = -1;
+      });
+      cnv.addEventListener("mouseup", () => {
+        preX = -1;
+      });
+      cnv.addEventListener("mousemove", (e) => {
+        if (e.buttons % 2 == 1) {
+          x = e.offsetX;
+          y = e.offsetY;
+          if (preX >= 0) {
+            ctx.beginPath();
+            ctx.moveTo(preX, preY);
+            ctx.lineTo(x, y);
+            ctx.stroke();
+          }
+          preX = x;
+          preY = y;
+        }
+      });
+    </script>
+  </body>
+</html>
